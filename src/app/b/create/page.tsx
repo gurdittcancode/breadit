@@ -5,16 +5,58 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { CreateSubreaditPayload } from "@/lib/validators/subreadit";
+import { toast } from "@/hooks/use-toast";
+import { useCustomToast } from "@/hooks/use-custom-toast";
 
 const Page: FC = ({}) => {
   const [input, setInput] = useState<string>("");
   const router = useRouter();
+  const { loginToast } = useCustomToast();
 
-  const {} = useMutation({
+  const { mutate: createCommunity, isLoading } = useMutation({
     mutationFn: async () => {
-      const payload = {};
+      const payload: CreateSubreaditPayload = {
+        name: input,
+      };
+
       const { data } = await axios.post("/api/subreadit", payload);
+      return data as string;
+    },
+
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 409) {
+          return toast({
+            title: "Subreadit already exists!",
+            description: "Please choose a different subreadit name.",
+            variant: "destructive",
+          });
+        }
+      }
+
+      if (err.response?.status === 422) {
+        return toast({
+          title: "Invalid subreadit name",
+          description: "Please choose a name between 3 and 21 characters.",
+          variant: "destructive",
+        });
+      }
+
+      if (err.response.status === 401) {
+        return loginToast();
+      }
+
+      toast({
+        title: "There was an error",
+        description: "Could not create subreadit.",
+        variant: "destructive",
+      });
+    },
+
+    onSuccess: (data) => {
+      router.push(`/b/${data}`);
     },
   });
 
@@ -50,7 +92,13 @@ const Page: FC = ({}) => {
           >
             Cancel
           </Button>
-          <Button>Create community</Button>
+          <Button
+            isLoading={isLoading}
+            disabled={input.length === 0}
+            onClick={() => createCommunity()}
+          >
+            Create community
+          </Button>
         </div>
       </div>
     </div>
