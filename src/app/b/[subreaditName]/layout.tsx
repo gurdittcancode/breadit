@@ -2,6 +2,7 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
+import SubscribeOrLeaveToggle from "@/components/SubscribeOrLeaveToggle";
 
 const Layout = async ({
   children,
@@ -85,10 +86,13 @@ const Layout = async ({
                 </div>
               )}
 
-              {/* {subreadit.creatorId !== session?.user.id && */}
-              {/*   { */}
-              {/*     /* TODO:  
-              {/*   }} */}
+              {subreadit.creatorId !== session?.user.id && (
+                <SubscribeOrLeaveToggle
+                  subreaditId={subreadit.id}
+                  isSubscribed={isSubscribed}
+                  subreaditName={subreadit.name}
+                />
+              )}
             </dl>
           </div>
         </div>
