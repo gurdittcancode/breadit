@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import SubscribeOrLeaveToggle from "@/components/SubscribeOrLeaveToggle";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/Button";
 
 const Layout = async ({
   children,
@@ -93,6 +95,16 @@ const Layout = async ({
                   subreaditName={subreadit.name}
                 />
               )}
+
+              <Link
+                className={buttonVariants({
+                  variant: "outline",
+                  className: "w-full mb-6",
+                })}
+                href={`b/${subreaditName}/submit`}
+              >
+                Create Post
+              </Link>
             </dl>
           </div>
         </div>
