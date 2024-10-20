@@ -1,4 +1,5 @@
 import MiniCreatePostButton from "@/components/MiniCreatePostButton";
+import PostFeed from "@/components/PostFeed";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -39,7 +40,7 @@ const page = async ({ params: { subreaditName } }: IpageProps) => {
         b/{subreadit.name}
       </h1>
       <MiniCreatePostButton session={session} />
-      {/* TODO: show posts in user feed */}
+      <PostFeed subreaditName={subreadit.name} initialPosts={subreadit.posts} />
     </>
   );
 };
