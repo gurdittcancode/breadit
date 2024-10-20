@@ -3,6 +3,7 @@ import { Post, User, Vote } from "@prisma/client";
 import { MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { FC, useRef } from "react";
+import EditorOutput from "./EditorOutput";
 
 interface IPostProps {
   subreaditName: string;
@@ -45,10 +46,11 @@ const Post: FC<IPostProps> = ({ subreaditName, post, totalComments }) => {
           <div
             className="relative text-sm max-h-40 w-full overflow-clip"
             ref={pRef}
-            // if post height is more than max-height, blur it
           >
+            <EditorOutput content={post.content} />
             {pRef.current?.clientHeight === 160 ? (
-              <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-top from-white to-transparent" />
+              // if post height is more than max-height, blur it
+              <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent"></div>
             ) : null}
           </div>
         </div>
