@@ -63,6 +63,8 @@ const PostFeed: FC<IPostFeedProps> = ({ initialPosts, subreaditName }) => {
           return (
             <li key={post.id} ref={ref}>
               <Post
+                totalVotes={totalVotes}
+                currentVote={userHasVoted}
                 totalComments={post.comments.length}
                 post={post}
                 subreaditName={post.subreadit.name}
@@ -74,6 +76,8 @@ const PostFeed: FC<IPostFeedProps> = ({ initialPosts, subreaditName }) => {
         return (
           <Post
             totalComments={post.comments.length}
+            totalVotes={totalVotes}
+            currentVote={userHasVoted}
             key={post.id}
             post={post}
             subreaditName={post.subreadit.name}
