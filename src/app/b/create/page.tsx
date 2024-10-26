@@ -70,8 +70,9 @@ const Page: FC = ({}) => {
         <hr className="bg-zinc-500 h-px" />
         <div>
           <p className="text-lg font-medium">Name</p>
-          <p className="text-xs pb-2">
-            Community names including capitalization cannot be changed.
+          <p className="text-xs pb-2 text-red-500">
+            * Community names, including capitalization, cannot be changed
+            later.
           </p>
 
           <div className="relative">
