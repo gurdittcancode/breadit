@@ -4,6 +4,7 @@ import { FC, useRef } from "react";
 import UserAvatar from "./UserAvatar";
 import { Comment, CommentVote, User } from "@prisma/client";
 import { formatTimeToNow } from "@/lib/utils";
+import CommentVotes from "./CommentVotes";
 
 type ExtendedComment = Comment & {
   votes: CommentVote[];
@@ -12,9 +13,17 @@ type ExtendedComment = Comment & {
 
 interface IPostCommentProps {
   comment: ExtendedComment;
+  votesAmt: number;
+  currentVote: CommentVote | undefined;
+  postId: string;
 }
 
-const PostComment: FC<IPostCommentProps> = ({ comment }) => {
+const PostComment: FC<IPostCommentProps> = ({
+  comment,
+  currentVote,
+  postId,
+  votesAmt,
+}) => {
   const commentRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -39,6 +48,14 @@ const PostComment: FC<IPostCommentProps> = ({ comment }) => {
       </div>
 
       <p className="text-sm text-zinc-900 mt-2">{comment.text}</p>
+
+      <div className="flex gap-2 items-center">
+        <CommentVotes
+          commentId={comment.id}
+          initialTotalVotes={votesAmt}
+          initialVote={currentVote}
+        />
+      </div>
     </div>
   );
 };

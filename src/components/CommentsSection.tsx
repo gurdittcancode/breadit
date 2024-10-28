@@ -53,7 +53,12 @@ const CommentsSection = async ({ postId }: ICommentsSectionProps) => {
             return (
               <div key={topLevelCmt.id} className="flex flex-col">
                 <div className="mb-2">
-                  <PostComment comment={topLevelCmt} />
+                  <PostComment
+                    comment={topLevelCmt}
+                    currentVote={userCmtVote}
+                    postId={postId}
+                    votesAmt={votes}
+                  />
                 </div>
               </div>
             );
