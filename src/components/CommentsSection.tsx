@@ -1,6 +1,5 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { FC } from "react";
 import PostComment from "./PostComment";
 import CreateComment from "./CreateComment";
 
@@ -33,7 +32,6 @@ const CommentsSection = async ({ postId }: ICommentsSectionProps) => {
     <div className="flex flex-col gap-y-4 mt-4">
       <hr className="w-full h-px my-6" />
 
-      {/* TODO: Create comment button */}
       <CreateComment postId={postId} />
 
       <div className="flex flex-col gap-y-6 mt-4">
@@ -60,6 +58,33 @@ const CommentsSection = async ({ postId }: ICommentsSectionProps) => {
                     votesAmt={votes}
                   />
                 </div>
+
+                {topLevelCmt.replies
+                  .sort((a, b) => b.votes.length - a.votes.length)
+                  .map((reply) => {
+                    const replyVotes = reply.votes.reduce((acc, vote) => {
+                      if (vote.type === "UP") return acc + 1;
+                      if (vote.type === "DOWN") return acc - 1;
+                      return acc;
+                    }, 0);
+
+                    const userRplVote = topLevelCmt.votes.find(
+                      (vote) => vote.userId === session?.user.id,
+                    );
+                    return (
+                      <div
+                        key={reply.id}
+                        className="ml-2 py-2 pl-4 border-l-2 border-zinc-200"
+                      >
+                        <PostComment
+                          comment={reply}
+                          currentVote={userRplVote}
+                          postId={postId}
+                          votesAmt={replyVotes}
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             );
           })}

@@ -36,13 +36,14 @@ const CreateComment: FC<ICreateCommentProps> = ({ postId, replyToId }) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
-            title: "Subreadit already exists!",
-            description: "Please choose a different subreadit name.",
+            title: "Something went wrong",
+            description: "Couldn't post your comment, please try again later",
             variant: "destructive",
           });
         }
       }
 
+      // @ts-expect-error
       if (err.response?.status === 422) {
         return toast({
           title: "Invalid comment",
@@ -51,6 +52,7 @@ const CreateComment: FC<ICreateCommentProps> = ({ postId, replyToId }) => {
         });
       }
 
+      // @ts-expect-error
       if (err.response.status === 401) {
         return loginToast();
       }
